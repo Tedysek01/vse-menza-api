@@ -4,6 +4,8 @@ import { pragueToday } from "./dates.js";
 import { loadCanteens } from "./registry.js";
 import { AREAS, type AreaId, type Canteen } from "./types.js";
 
+// Vercel's zero-config Hono support uses this file (src/app.ts) as the entrypoint and
+// needs the app as the default export. The named export is for dev.ts and the tests.
 export const app = new Hono();
 
 app.use("*", cors());
@@ -76,3 +78,5 @@ function cacheHeaders(c: Context) {
 function isArea(s: string): s is AreaId {
   return (AREAS as readonly string[]).includes(s);
 }
+
+export default app;
