@@ -1,7 +1,7 @@
-import { addDays, pragueToday } from "./dates";
-import { parseVsePage } from "./sources/vse";
-import { parseWebKredit, webKreditMenuUrl, type WebKreditMenu } from "./sources/webkredit";
-import { UpstreamError, type AreaId, type Canteen } from "./types";
+import { addDays, pragueToday } from "./dates.js";
+import { parseVsePage } from "./sources/vse.js";
+import { parseWebKredit, webKreditMenuUrl, type WebKreditMenu } from "./sources/webkredit.js";
+import { UpstreamError, type AreaId, type Canteen } from "./types.js";
 
 const USER_AGENT = "vse-menza-api/0.1 (student project; menu aggregator)";
 const TIMEOUT_MS = 10_000;

@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parseCzechDate } from "../src/dates";
-import { parseVsePage } from "../src/sources/vse";
-import { parseWebKredit } from "../src/sources/webkredit";
-import { ParseError } from "../src/types";
+import { parseCzechDate } from "../src/dates.js";
+import { parseVsePage } from "../src/sources/vse.js";
+import { parseWebKredit } from "../src/sources/webkredit.js";
+import { ParseError } from "../src/types.js";
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), "utf8");
 const allItems = (days: { sections: { items: { raw: string }[] }[] }[]) =>

@@ -1,8 +1,8 @@
 import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
-import { pragueToday } from "./dates";
-import { loadCanteens } from "./registry";
-import { AREAS, type AreaId, type Canteen } from "./types";
+import { pragueToday } from "./dates.js";
+import { loadCanteens } from "./registry.js";
+import { AREAS, type AreaId, type Canteen } from "./types.js";
 
 export const app = new Hono();
 

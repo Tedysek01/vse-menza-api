@@ -1,5 +1,5 @@
-import { parseItem } from "../item";
-import type { MenuDay, MenuItem } from "../types";
+import { parseItem } from "../item.js";
+import type { MenuDay, MenuItem } from "../types.js";
 
 // WebKredit (Anete) is the canteens' ordering system. Its menu endpoint is public:
 //   GET https://webkredit.vse.cz/webkredit_italska/Api/Ordering/Menu?Dates=<ISO>&Dates=…&CanteenId=5

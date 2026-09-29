@@ -1,8 +1,8 @@
 import { load, type Cheerio, type CheerioAPI } from "cheerio";
 import type { Element } from "domhandler";
-import { parseCzechDate } from "../dates";
-import { normalize, parseItem } from "../item";
-import { ParseError, type AreaId, type Canteen, type MenuDay, type MenuSection } from "../types";
+import { parseCzechDate } from "../dates.js";
+import { normalize, parseItem } from "../item.js";
+import { ParseError, type AreaId, type Canteen, type MenuDay, type MenuSection } from "../types.js";
 
 // Page layout (vse.cz WordPress, checked 29. 9. 2026), inside <article>:
 //   <h2>Menza AV Gastro …</h2>

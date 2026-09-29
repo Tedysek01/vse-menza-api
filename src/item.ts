@@ -1,4 +1,4 @@
-import type { MenuItem } from "./types";
+import type { MenuItem } from "./types.js";
 
 // Each restaurant types its menu differently; examples from the live page (29. 9. 2026):
 //   AV Gastro  "Plzeňský vepřový guláš … (1,3,7)  Pilsner-style pork goulash … (1,3,7)"

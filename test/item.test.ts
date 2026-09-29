@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseItem } from "../src/item";
+import { parseItem } from "../src/item.js";
 
 // All inputs are verbatim strings from the live pages on 29. 9. 2026.
 describe("parseItem", () => {

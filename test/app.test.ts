@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { app } from "../src/app";
-import { clearCache } from "../src/registry";
+import { app } from "../src/app.js";
+import { clearCache } from "../src/registry.js";
 
 // Loosely typed: the tests assert on the JSON shape directly.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
