@@ -1,0 +1,25 @@
+{
+  "name": "vse-menza-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "JSON API over the VŠE canteen menus (vse.cz + WebKredit)",
+  "scripts": {
+    "dev": "tsx watch src/dev.ts",
+    "start": "tsx src/dev.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.3",
+    "cheerio": "^1.2.0",
+    "hono": "^4.13.11"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "domhandler": "^5.0.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.0",
+    "vitest": "^5.0.2"
+  }
+}
