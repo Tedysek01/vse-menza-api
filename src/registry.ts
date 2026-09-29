@@ -12,6 +12,8 @@ const WEBKREDIT = "https://webkredit.vse.cz/webkredit_italska";
 interface Source {
   key: string;
   area: AreaId;
+  /** Fixed data (Volha) that never fails; doesn't count towards "every source is down". */
+  static?: true;
   load: (warnings: string[]) => Promise<Canteen[]>;
 }
 
@@ -52,6 +54,7 @@ export const SOURCES: Source[] = [
   {
     key: "static:volha",
     area: "jizni-mesto",
+    static: true,
     load: async () => [
       {
         id: "volha",
@@ -81,6 +84,14 @@ const inFlight = new Map<string, Promise<CacheEntry>>();
 export interface LoadResult {
   canteens: Canteen[];
   warnings: string[];
+  /** True when every live source failed and none had an earlier copy to fall back on. */
+  allFailed: boolean;
+}
+
+interface SourceResult {
+  canteens: Canteen[];
+  warnings: string[];
+  failed: boolean;
 }
 
 /**
@@ -90,15 +101,17 @@ export interface LoadResult {
 export async function loadCanteens(areas?: AreaId[]): Promise<LoadResult> {
   const sources = SOURCES.filter((s) => !areas || areas.includes(s.area));
   const results = await Promise.all(sources.map((s) => loadSource(s)));
+  const live = results.filter((_, i) => !sources[i]!.static);
   return {
     canteens: results.flatMap((r) => r.canteens),
     warnings: results.flatMap((r) => r.warnings),
+    allFailed: live.length > 0 && live.every((r) => r.failed),
   };
 }
 
-async function loadSource(source: Source): Promise<LoadResult> {
+async function loadSource(source: Source): Promise<SourceResult> {
   const cached = cache.get(source.key);
-  if (cached && Date.now() - cached.at < TTL_MS) return cached;
+  if (cached && Date.now() - cached.at < TTL_MS) return { ...cached, failed: false };
 
   let pending = inFlight.get(source.key);
   if (!pending) {
@@ -113,15 +126,19 @@ async function loadSource(source: Source): Promise<LoadResult> {
   try {
     const entry = await pending;
     cache.set(source.key, entry);
-    return entry;
+    return { ...entry, failed: false };
   } catch (err) {
     const reason = err instanceof Error ? err.message : String(err);
     console.error(`[vse-menza-api] ${source.key} failed: ${reason}`);
     if (cached) {
       const age = Math.round((Date.now() - cached.at) / 60_000);
-      return { canteens: cached.canteens, warnings: [...cached.warnings, `${source.key}: ${reason}; serving data from ${age} min ago`] };
+      return {
+        canteens: cached.canteens,
+        warnings: [...cached.warnings, `${source.key}: ${reason}; serving data from ${age} min ago`],
+        failed: false,
+      };
     }
-    return { canteens: [], warnings: [`${source.key}: ${reason}`] };
+    return { canteens: [], warnings: [`${source.key}: ${reason}`], failed: true };
   }
 }
 

@@ -75,6 +75,15 @@ describe("API", () => {
     expect(body.warnings.join()).toMatch(/HTTP 503/);
   });
 
+  it("returns 502 when every live source is down, even though Volha is static", async () => {
+    const down = () => new Response("down", { status: 503 });
+    fakeUpstream({ "vse.cz": down, webkredit: down });
+    const res = await app.request("/menu");
+    expect(res.status).toBe(502);
+    const body: Json = await res.json();
+    expect(body.warnings).toHaveLength(3);
+  });
+
   it("rejects bad input", async () => {
     fakeUpstream();
     expect((await app.request("/menu?date=zitra")).status).toBe(400);

@@ -23,8 +23,8 @@ app.get("/", (c) =>
 );
 
 app.get("/canteens", async (c) => {
-  const { canteens, warnings } = await loadCanteens();
-  if (!canteens.length) return c.json({ error: "All upstream sources failed", warnings }, 502);
+  const { canteens, warnings, allFailed } = await loadCanteens();
+  if (allFailed) return c.json({ error: "All upstream sources failed", warnings }, 502);
   cacheHeaders(c);
   return c.json({
     canteens: canteens.map(({ days: _days, ...rest }) => rest),
@@ -53,8 +53,8 @@ async function menu(c: Context, dateParam: string | undefined) {
     date = dateParam;
   }
 
-  const { canteens, warnings } = await loadCanteens(area ? [area] : undefined);
-  if (!canteens.length) return c.json({ error: "All upstream sources failed", warnings }, 502);
+  const { canteens, warnings, allFailed } = await loadCanteens(area ? [area] : undefined);
+  if (allFailed) return c.json({ error: "All upstream sources failed", warnings }, 502);
 
   let result: Canteen[] = canteens;
   const canteenParam = c.req.query("canteen");
